@@ -7,17 +7,16 @@ import java.sql.Statement;
 import java.util.Scanner;
 
 public class GestionAlumnos {
-
     //atributos
     private int iId;
-    private float dNota;
+    private float fNota;
     private String sNombre;
     private String sCurso;
 
     //constructor
-    public GestionAlumnos(int iId, float dNota, String sNombre, String sCurso) {
+    public GestionAlumnos(int iId, float fNota, String sNombre, String sCurso) {
         this.iId = iId;
-        this.dNota = dNota;
+        this.fNota = fNota;
         this.sNombre = sNombre;
         this.sCurso = sCurso;
     }
@@ -26,8 +25,8 @@ public class GestionAlumnos {
         this.iId = iId;
     }
 
-    public void setdNota(float dNota) {
-        this.dNota = dNota;
+    public void setfNota(float fNota) {
+        this.fNota = fNota;
     }
 
     public String setsNombre(String sNombre, Scanner entrada) {
@@ -68,7 +67,10 @@ public class GestionAlumnos {
         if (conexion != null) {
             try {
                 var stmt = conexion.prepareStatement("INSERT INTO alumno (Nombre,Nota_media,Curso) values (?,?,?)");
-
+                stmt.setString(1, this.sNombre);
+                stmt.setFloat(2, this.fNota);
+                stmt.setString(3, this.sCurso);
+                
             } catch (Exception e) {
             }
         }
