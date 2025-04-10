@@ -1,50 +1,66 @@
 package bd_instituto;
 
+import java.awt.font.NumericShaper;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class GestionAlumnos {
+
     //atributos
-    private int iId;
     private float fNota;
     private String sNombre;
     private String sCurso;
 
     //constructor
-    public GestionAlumnos(int iId, float fNota, String sNombre, String sCurso) {
-        this.iId = iId;
-        this.fNota = fNota;
-        this.sNombre = sNombre;
-        this.sCurso = sCurso;
+    public GestionAlumnos() {
+        this.fNota = 0;
+        this.sNombre = "root";
+        this.sCurso = "1A";
     }
 
-    public void setiId(int iId) {
-        this.iId = iId;
+    //metodos para declarar las variables
+    public static float setfNota(float fNota, Scanner in) {
+        boolean stay = true;
+        try {
+            while (stay) {
+
+                System.out.print("Introduce la nota media que has sacado en este curso (1-10):");
+                fNota = in.nextFloat();
+
+                if (fNota < 1 || fNota > 10) {
+                    System.out.println("La nota no está en el rango de 1 a 10.");
+                }
+                else{
+                    stay = false;
+                }
+            }
+        } catch (InputMismatchException e) {
+            System.out.println("No has introducido un numero");
+        }
+
+        return fNota;
     }
 
-    public void setfNota(float fNota) {
-        this.fNota = fNota;
-    }
-
-    public String setsNombre(String sNombre, Scanner entrada) {
+    public static String setsNombre(String sNombre, Scanner in) {
         System.out.print("Introduzca el nombre: ");
-        sNombre = entrada.nextLine();
-
-        return this.sNombre;
+        sNombre = in.nextLine();
+        return sNombre;
     }
 
-    public void setsCurso(String sCurso) {
-        this.sCurso = sCurso;
+    public static String setsCurso(String sCurso, Scanner in) {
+        return sCurso;
     }
 
+    //metodos de manipulacion, edicion y revision de la base de datos
     public void verAlumnos() {
         Connection conexion = ConexionBaseDatos.getConnection();
         if (conexion != null) {
             try {
-                String listar = "SELECT * FROM contacto";
+                String listar = "SELECT * FROM alumno";
                 Statement stmt = conexion.createStatement();
                 ResultSet resultado = stmt.executeQuery(listar);
 
@@ -63,15 +79,21 @@ public class GestionAlumnos {
 
     public void agregarAlumno() {
         Connection conexion = ConexionBaseDatos.getConnection();
+        Scanner in = new Scanner(System.in);
 
         if (conexion != null) {
             try {
                 var stmt = conexion.prepareStatement("INSERT INTO alumno (Nombre,Nota_media,Curso) values (?,?,?)");
-                stmt.setString(1, this.sNombre);
-                stmt.setFloat(2, this.fNota);
-                stmt.setString(3, this.sCurso);
+                String nombre=GestionAlumnos.setsNombre(sNombre, in);
+                String curso=GestionAlumnos.setsCurso(sCurso, in);
+                float nota=GestionAlumnos.setfNota(fNota, in);
                 
-            } catch (Exception e) {
+                stmt.setString(1, nombre);
+                stmt.setFloat(2, nota);
+                stmt.setString(3, curso);
+                System.out.println("sa");
+            } catch (SQLException e) {
+                System.out.println("ha ocurrido un error: " + e.getMessage());
             }
         }
     }
