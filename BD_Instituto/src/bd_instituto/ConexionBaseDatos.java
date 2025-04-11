@@ -14,7 +14,6 @@ public class ConexionBaseDatos {
         
         try {
             conexion=DriverManager.getConnection(URL,USER,PASSWORD);
-            System.out.println("Conexion establecida");
 
         } catch (SQLException e) {
             System.out.println("Error en la conexion: "+e.getMessage());
