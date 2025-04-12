@@ -130,6 +130,4 @@ public class GestionAlumnos {
             System.out.println("Ha ocurrido un error en la base de datos: " + e.getMessage());
         }
     }
-    
-    
 }
