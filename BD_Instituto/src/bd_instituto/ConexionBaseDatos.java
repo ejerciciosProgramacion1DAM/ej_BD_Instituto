@@ -5,9 +5,9 @@ import java.sql.SQLException;
 
 
 public class ConexionBaseDatos {
-    private static final String URL="jdbc:mysql://localhost:3307/bd_instituto";
+    private static final String URL="jdbc:mysql://158.179.213.25:3307/classicmodels";
     private static final String USER="root";
-    private static final String PASSWORD="";
+    private static final String PASSWORD="root";
     
     public static Connection getConnection(){
         Connection conexion=null;
